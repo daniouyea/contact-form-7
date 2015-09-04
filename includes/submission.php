@@ -130,9 +130,15 @@ class WPCF7_Submission {
 			return $this->status;
 		}
 
+		if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+			$remote_ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
+		} else {
+			$remote_ip = $_SERVER['REMOTE_ADDR'];
+		}
+
 		$this->meta = array(
 			'remote_ip' => preg_replace( '/[^0-9a-f.:, ]/', '',
-				$_SERVER['REMOTE_ADDR'] ),
+				$remote_ip ),
 			'user_agent' => substr( $_SERVER['HTTP_USER_AGENT'], 0, 254 ),
 			'url' => preg_replace( '%(?<!:|/)/.*$%', '',
 				untrailingslashit( home_url() ) ) . wpcf7_get_request_uri(),
